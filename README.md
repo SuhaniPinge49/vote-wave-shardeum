@@ -1,73 +1,48 @@
 # Welcome to our project
 
-## Project info
+Theme: Building on Shardeum Unstablenet
+🔥 Project Title:
 
-**URL**: https://lovable.dev/projects/db6ac810-38b0-441b-b8e3-98b43aad2fc6
+VoteWave: A Decentralized Voting & Polling Tool for Clubs and Communities
 
-## How can I edit this code?
+🎯 Project Description:
 
-There are several ways of editing your application.
+VoteWave is a fast, secure, and user-friendly decentralized application (dApp) built on Shardeum Unstablenet. It enables clubs, DAOs, and communities to create tamper-proof polls and conduct transparent voting—whether it's electing leadership, deciding on events, or making policy decisions.
 
-**Use Lovable**
+Powered by Shardeum’s EVM-compatible smart contracts, VoteWave showcases the speed, scalability, and ultra-low gas fees of the Shardeum network, making democratic participation accessible and cost-effective for all users.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/db6ac810-38b0-441b-b8e3-98b43aad2fc6) and start prompting.
+✨ Key Features:
 
-Changes made via Lovable will be committed automatically to this repo.
+✅ Create & Manage Polls: Admins can create polls with custom options, set deadlines, and define who can vote.
 
-**Use your preferred IDE**
+🧑‍⚖️ Secure Voting: Votes are recorded immutably on-chain, ensuring transparency and preventing double voting.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+⚡ Real-Time Results: Poll results update live, showcasing Shardeum's lightning-fast finality.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+💸 Low Gas Costs: Voting costs just a fraction of a cent, making it feasible for daily use, even in large communities.
 
-Follow these steps:
+🖼️ Animated UI: The front end is designed with smooth animations, micro-interactions, and a vibrant UI/UX for an engaging experience.
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+📱 Mobile Responsive: Built with full responsiveness to ensure accessibility on all devices.
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+🧱 Tech Stack:
 
-# Step 3: Install the necessary dependencies.
-npm i
+Blockchain: Shardeum Unstablenet (EVM-compatible)
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+Smart Contracts: Solidity
 
-**Edit a file directly in GitHub**
+Frontend: React.js + TailwindCSS + Framer Motion for animations
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Wallet Integration: MetaMask / Shardeum-compatible wallets via Web3.js or Ethers.js
 
-**Use GitHub Codespaces**
+Backend (if needed): Node.js + Express (for off-chain access control or metadata)
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+🌐 Why Shardeum?
 
-## What technologies are used for this project?
+Shardeum’s linear scalability and low gas costs make it the perfect blockchain for tools that require frequent transactions, such as voting. VoteWave leverages Shardeum’s strengths to:
 
-This project is built with:
+Scale to thousands of voters with no performance lag
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Enable real-time interactions and feedback
 
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/db6ac810-38b0-441b-b8e3-98b43aad2fc6) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Operate with microtransactions, making gas fees nearly negligible

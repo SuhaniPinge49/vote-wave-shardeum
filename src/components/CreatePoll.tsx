@@ -4,8 +4,9 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Plus, X, Calendar, Settings } from "lucide-react";
+import { Plus, X, Calendar, Settings, Wallet } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useWallet } from "@/hooks/useWallet";
 
 const CreatePoll = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +17,7 @@ const CreatePoll = () => {
   });
   const [isCreating, setIsCreating] = useState(false);
   const { toast } = useToast();
+  const { isConnected, account, connectWallet } = useWallet();
 
   const addOption = () => {
     if (formData.options.length < 6) {
@@ -42,6 +44,16 @@ const CreatePoll = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Check wallet connection first
+    if (!isConnected) {
+      toast({
+        title: "Wallet Not Connected",
+        description: "Please connect your wallet to create a poll.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     // Validation
     if (!formData.title.trim() || !formData.description.trim() || !formData.endDate) {
       toast({
@@ -64,12 +76,26 @@ const CreatePoll = () => {
 
     setIsCreating(true);
 
-    // Simulate blockchain deployment
-    setTimeout(() => {
+    try {
+      // Simulate blockchain deployment transaction
+      toast({
+        title: "Transaction Initiated",
+        description: "Please confirm the contract deployment in MetaMask...",
+      });
+
+      // In a real implementation:
+      // 1. Prepare contract deployment data
+      // 2. Estimate gas costs
+      // 3. Send transaction via MetaMask
+      // 4. Wait for confirmation
+      
+      // Simulate network delay
+      await new Promise(resolve => setTimeout(resolve, 4000));
+      
       setIsCreating(false);
       toast({
         title: "Poll Created Successfully!",
-        description: "Your poll has been deployed to the Shardeum blockchain.",
+        description: `Your poll has been deployed to Shardeum. Contract: 0x${Math.random().toString(16).slice(2, 18)}...`,
       });
       
       // Reset form
@@ -79,7 +105,14 @@ const CreatePoll = () => {
         endDate: "",
         options: ["", ""]
       });
-    }, 3000);
+    } catch (error) {
+      setIsCreating(false);
+      toast({
+        title: "Deployment Failed",
+        description: "Failed to deploy poll contract. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -189,29 +222,43 @@ const CreatePoll = () => {
                 </div>
               </div>
 
-              {/* Submit Button */}
-              <Button
-                type="submit"
-                disabled={isCreating}
-                className="w-full vote-button py-6 text-lg"
-              >
-                {isCreating ? (
-                  <>
-                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-primary-foreground border-t-transparent mr-2" />
-                    Deploying to Shardeum...
-                  </>
-                ) : (
-                  <>
-                    <Settings className="h-5 w-5 mr-2" />
-                    Create Poll on Blockchain
-                  </>
-                )}
-              </Button>
+              {/* Submit Button or Connect Wallet */}
+              {!isConnected ? (
+                <Button
+                  type="button"
+                  onClick={connectWallet}
+                  className="w-full vote-button py-6 text-lg"
+                >
+                  <Wallet className="h-5 w-5 mr-2" />
+                  Connect Wallet to Create Poll
+                </Button>
+              ) : (
+                <Button
+                  type="submit"
+                  disabled={isCreating}
+                  className="w-full vote-button py-6 text-lg"
+                >
+                  {isCreating ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-2 border-primary-foreground border-t-transparent mr-2" />
+                      Deploying to Shardeum...
+                    </>
+                  ) : (
+                    <>
+                      <Settings className="h-5 w-5 mr-2" />
+                      Create Poll on Blockchain ({account ? `${account.slice(0, 6)}...` : ""})
+                    </>
+                  )}
+                </Button>
+              )}
 
               {/* Gas Fee Info */}
-              <div className="text-center text-sm text-muted-foreground">
-                <p>Estimated gas fee: ~$0.001 (Ultra-low on Shardeum!)</p>
-              </div>
+              {isConnected && (
+                <div className="text-center text-sm text-muted-foreground">
+                  <p>Estimated gas fee: ~$0.001 (Ultra-low on Shardeum!)</p>
+                  <p className="text-xs mt-1">Connected: {account ? `${account.slice(0, 6)}...${account.slice(-4)}` : ""}</p>
+                </div>
+              )}
             </form>
           </Card>
         </div>

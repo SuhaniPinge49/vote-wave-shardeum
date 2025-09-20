@@ -2,8 +2,9 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Clock, Users, CheckCircle, Calendar } from "lucide-react";
+import { Clock, Users, CheckCircle, Calendar, Wallet } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useWallet } from "@/hooks/useWallet";
 
 interface PollOption {
   id: string;
@@ -31,21 +32,42 @@ const PollCard = ({ poll }: PollCardProps) => {
   const [isVoting, setIsVoting] = useState(false);
   const [hasVoted, setHasVoted] = useState(poll.hasVoted);
   const { toast } = useToast();
+  const { isConnected, account, connectWallet } = useWallet();
 
   const handleVote = async () => {
-    if (!selectedOption) return;
+    if (!selectedOption || !isConnected) return;
 
     setIsVoting(true);
     
-    // Simulate blockchain transaction
-    setTimeout(() => {
+    try {
+      // Simulate blockchain transaction with MetaMask
+      toast({
+        title: "Transaction Initiated",
+        description: "Please confirm the transaction in MetaMask...",
+      });
+
+      // In a real implementation, you would:
+      // 1. Create the transaction data
+      // 2. Send via window.ethereum.request({ method: 'eth_sendTransaction', params: [...] })
+      // 3. Handle the transaction receipt
+      
+      // Simulate network delay
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      
       setHasVoted(true);
       setIsVoting(false);
       toast({
         title: "Vote Cast Successfully!",
-        description: "Your vote has been recorded on the Shardeum blockchain.",
+        description: `Your vote has been recorded on the Shardeum blockchain. TX: 0x${Math.random().toString(16).slice(2, 18)}...`,
       });
-    }, 2000);
+    } catch (error) {
+      setIsVoting(false);
+      toast({
+        title: "Transaction Failed",
+        description: "Your vote could not be processed. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const getTimeRemaining = () => {
@@ -107,7 +129,7 @@ const PollCard = ({ poll }: PollCardProps) => {
                   ? "bg-primary/10 border-primary"
                   : "bg-card-secondary/20 border-card-border hover:border-primary/50"
               }`}
-              onClick={() => !hasVoted && poll.isActive && setSelectedOption(option.id)}
+              onClick={() => !hasVoted && poll.isActive && isConnected && setSelectedOption(option.id)}
             >
               <div className="flex items-center justify-between mb-2">
                 <span className="font-medium">{option.text}</span>
@@ -133,25 +155,37 @@ const PollCard = ({ poll }: PollCardProps) => {
         })}
       </div>
 
-      {/* Vote Button */}
+      {/* Vote Button or Connection Prompt */}
       {poll.isActive && !hasVoted && (
-        <Button
-          onClick={handleVote}
-          disabled={!selectedOption || isVoting}
-          className="w-full vote-button"
-        >
-          {isVoting ? (
-            <>
-              <div className="animate-spin rounded-full h-4 w-4 border-2 border-primary-foreground border-t-transparent mr-2" />
-              Casting Vote...
-            </>
+        <>
+          {!isConnected ? (
+            <Button
+              onClick={connectWallet}
+              className="w-full vote-button"
+            >
+              <Wallet className="h-4 w-4 mr-2" />
+              Connect Wallet to Vote
+            </Button>
           ) : (
-            <>
-              <CheckCircle className="h-4 w-4 mr-2" />
-              Cast Your Vote
-            </>
+            <Button
+              onClick={handleVote}
+              disabled={!selectedOption || isVoting}
+              className="w-full vote-button"
+            >
+              {isVoting ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-primary-foreground border-t-transparent mr-2" />
+                  Processing Transaction...
+                </>
+              ) : (
+                <>
+                  <CheckCircle className="h-4 w-4 mr-2" />
+                  Cast Your Vote ({account ? `${account.slice(0, 6)}...` : ""})
+                </>
+              )}
+            </Button>
           )}
-        </Button>
+        </>
       )}
       
       {hasVoted && (

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Wallet, Vote, Menu, X, ExternalLink, Power } from "lucide-react";
-import { useWallet } from "@/hooks/useWallet";
+import { useWallet } from "@/hooks/useWallet.ts";
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
